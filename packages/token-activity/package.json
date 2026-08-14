@@ -19,6 +19,10 @@
       "types": "./lib/projection.d.ts",
       "default": "./lib/projection.js"
     },
+    "./remote": {
+      "types": "./lib/remote.d.ts",
+      "default": "./lib/remote.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [

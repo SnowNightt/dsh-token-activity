@@ -13,13 +13,17 @@
     },
     "./client": {
       "types": "./lib/client/index.d.ts",
-      "default": "./lib/client/index.js"
+      "default": "./lib/client.js"
     },
     "./package.json": "./package.json"
   },
   "files": [
-    "lib/**/*.js",
-    "lib/**/*.d.ts"
+    "lib/index.js",
+    "lib/index.js.map",
+    "lib/client.js",
+    "lib/client.js.map",
+    "lib/**/*.d.ts",
+    "lib/**/*.d.ts.map"
   ],
   "dsh": {
     "client": {
@@ -36,7 +40,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && tsdown --config tsdown.config.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
@@ -47,15 +51,18 @@
     "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-client-ui-settings": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.5",
+    "@deepseek-ai/dsh-typert-protocol": "^0.1.0-rc.5",
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@snownightt/dsh-token-activity": "workspace:^",
     "@deepseek-ai/cordis": "4.0.1",
     "@deepseek-ai/dsh-api-remotes": "0.1.0-rc.6",
     "@deepseek-ai/dsh-client-locale": "0.1.0-rc.6",
     "@deepseek-ai/dsh-client-runtime": "0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-settings": "0.1.0-rc.6",
     "@deepseek-ai/dsh-client-ui-slots": "0.1.0-rc.6",
+    "@deepseek-ai/dsh-typert-protocol": "0.1.0-rc.6",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.0",
     "@types/react": "~18.3.1",
@@ -63,6 +70,7 @@
     "jsdom": "29.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tsdown": "^0.22.2",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8"
   }

@@ -8,6 +8,8 @@
  * @module @snownightt/dsh-ui-token-activity/client/contract
  */
 
+import type { RemoteResult } from '@deepseek-ai/dsh-typert-protocol'
+
 export interface TokenActivityModel {
   provider: string
   model: string
@@ -47,5 +49,5 @@ export interface TokenActivitySummary {
 
 /** The typed Remote the Host publishes (mirror of its `@Remote('summary')`). */
 export interface TokenActivityRemote {
-  summary(): Promise<TokenActivitySummary>
+  summary(): Promise<RemoteResult<TokenActivitySummary>>
 }
