@@ -32,12 +32,12 @@
 npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
 ```
 
-### 从 npm 安装（推荐）
+### 从 npm 安装
 
 安装npm包：
 
 ```sh
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.1
 ```
 
 安装完成后重启 DeepSeek Harness。
@@ -48,19 +48,9 @@ dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
 pnpm dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
 ```
 
-### 更新插件
-
-重新安装即可获取 npm 上的最新版本，然后重启 DeepSeek Harness：
-
-```sh
-dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
-dsh web
-```
-
 ### 本地开发
 
-推荐将 Deepseek Harness 和本项目放在同一父目录。
+若是本地启动 Deepseek Harness 并且 git clone 本仓库，推荐将 Deepseek Harness 和本项目放在同一父目录。
 
 先安装并构建插件：
 
@@ -74,8 +64,10 @@ pnpm run build
 然后进入 DeepSeek Harness 根目录执行：
 
 ```sh
-pnpm dsh plugin --profile web add ../deepseek-harness-token-activity/packages/token-activity ../deepseek-harness-token-activity/packages/ui-token-activity ../deepseek-harness-token-activity/packages/token-activity-bundle
+pnpm dsh plugin --profile web add ../dsh-token-activity/packages/token-activity ../dsh-token-activity/packages/ui-token-activity ../dsh-token-activity/packages/token-activity-bundle
 ```
+
+如果 Deepseek Harness 和本项目没在同一父级目录下，上面的安装命令中路径部分自行调整。
 
 安装成功后检查组合配置：
 
