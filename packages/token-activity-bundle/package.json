@@ -1,8 +1,8 @@
 {
   "name": "@snownightt/dsh-token-activity-bundle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Token-activity profile bundle: mounts the token-activity Host and Web-client plugins as one installable layer",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "files": [
     "cordis.patch.yml",
@@ -18,7 +18,7 @@
     }
   },
   "dependencies": {
-    "@snownightt/dsh-token-activity": "^0.1.0",
-    "@snownightt/dsh-ui-token-activity": "^0.1.0"
+    "@snownightt/dsh-token-activity": "^0.1.1",
+    "@snownightt/dsh-ui-token-activity": "^0.1.1"
   }
 }
