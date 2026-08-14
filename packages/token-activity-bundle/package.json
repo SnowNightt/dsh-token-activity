@@ -1,0 +1,24 @@
+{
+  "name": "@dsh-plugins/dsh-token-activity-bundle",
+  "version": "0.1.0",
+  "description": "Token-activity profile bundle: mounts the token-activity Host and Web-client plugins as one installable layer",
+  "license": "UNLICENSED",
+  "type": "module",
+  "files": [
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "exports": {
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@dsh-plugins/dsh-token-activity": "^0.1.0",
+    "@dsh-plugins/dsh-ui-token-activity": "^0.1.0"
+  }
+}

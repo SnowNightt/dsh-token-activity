@@ -2,7 +2,7 @@
   "name": "@dsh-plugins/dsh-ui-token-activity",
   "version": "0.1.0",
   "description": "DeepSeek Harness token-activity plugin (Web client): settings section, metric cards, heatmap, and tooltip",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
