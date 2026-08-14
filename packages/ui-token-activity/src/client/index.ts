@@ -1,5 +1,5 @@
 /**
- * Browser half of `@dsh-plugins/dsh-ui-token-activity`: registers the
+ * Browser half of `@snownightt/dsh-ui-token-activity`: registers the
  * "使用量 / Usage" settings section (PRD FR-01) through the existing
  * `settings.section` slot, wires it to the typed Token Activity remote, and
  * keeps the page fresh with backfill polling.
@@ -8,7 +8,7 @@
  * effect on this fiber, so unload revokes the section, the copy dictionaries,
  * and the store together (§8.1.8).
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client
+ * @module @snownightt/dsh-ui-token-activity/client
  */
 
 import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'

@@ -5,7 +5,7 @@
  * bundle (§8.3), so the client owns its own pure copies rather than importing
  * the Host entry (which would drag Cordis and the Session store along).
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/core
+ * @module @snownightt/dsh-ui-token-activity/client/core
  */
 
 /** Whether a BCP 47 locale tag is a Chinese variant (drives 万/亿 units). */

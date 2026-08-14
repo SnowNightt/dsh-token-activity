@@ -2,7 +2,7 @@
  * Pure Tooltip content model (PRD FR-05, §4.2). No React: the component just
  * renders these rows, so the sorting/disambiguation rules are unit-testable.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/tooltip-model
+ * @module @snownightt/dsh-ui-token-activity/client/tooltip-model
  */
 
 import type { TokenActivitySummaryDay } from './contract.ts'

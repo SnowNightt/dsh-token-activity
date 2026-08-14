@@ -10,7 +10,7 @@
  * wall-clock projection. No host clock is read here; `Date.now()` enters only
  * through the caller (the projection fold must stay synchronous and pure).
  *
- * @module @dsh-plugins/dsh-token-activity/core/timezone
+ * @module @snownightt/dsh-token-activity/core/timezone
  */
 
 const DAY_FORMATTERS = new Map<string, Intl.DateTimeFormat>()

@@ -3,7 +3,7 @@
  * (FR-06). The fetcher is injected so the store is unit-testable without any
  * Harness wire layer; the client `apply` wires it to the typed Remote.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/store
+ * @module @snownightt/dsh-ui-token-activity/client/store
  */
 
 import type { TokenActivitySummary } from './contract.ts'

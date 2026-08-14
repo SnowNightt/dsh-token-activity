@@ -1,17 +1,17 @@
-# `@dsh-plugins/dsh-token-activity-bundle`
+# `@snownightt/dsh-token-activity-bundle`
 
 Token 活动插件的**组合包（profile bundle）**：一次安装即可同时挂载 Host 插件与 Web 客户端插件，并自动加入 profile 的 `dsh.profile.bundles` 层列表。
 
 本包本身不含运行时代码，其全部内容就是 `cordis.patch.yml`（通过 `dsh.bundle.patch` 声明），以及对其依赖的两个插件包：
 
-- `@dsh-plugins/dsh-token-activity`（Host）
-- `@dsh-plugins/dsh-ui-token-activity`（Web client）
+- `@snownightt/dsh-token-activity`（Host）
+- `@snownightt/dsh-ui-token-activity`（Web client）
 
 ## 安装
 
 ```bash
 # 从 npm（发布后）
-dsh plugin --profile web add @dsh-plugins/dsh-token-activity-bundle
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
 
 # 本地 checkout
 dsh plugin --profile web add ./packages/token-activity-bundle

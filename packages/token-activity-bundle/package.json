@@ -1,5 +1,5 @@
 {
-  "name": "@dsh-plugins/dsh-token-activity-bundle",
+  "name": "@snownightt/dsh-token-activity-bundle",
   "version": "0.1.0",
   "description": "Token-activity profile bundle: mounts the token-activity Host and Web-client plugins as one installable layer",
   "license": "UNLICENSED",
@@ -18,7 +18,7 @@
     }
   },
   "dependencies": {
-    "@dsh-plugins/dsh-token-activity": "^0.1.0",
-    "@dsh-plugins/dsh-ui-token-activity": "^0.1.0"
+    "@snownightt/dsh-token-activity": "^0.1.0",
+    "@snownightt/dsh-ui-token-activity": "^0.1.0"
   }
 }

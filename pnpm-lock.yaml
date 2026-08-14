@@ -60,10 +60,10 @@ importers:
 
   packages/token-activity-bundle:
     dependencies:
-      '@dsh-plugins/dsh-token-activity':
+      '@snownightt/dsh-token-activity':
         specifier: ^0.1.0
         version: link:../token-activity
-      '@dsh-plugins/dsh-ui-token-activity':
+      '@snownightt/dsh-ui-token-activity':
         specifier: ^0.1.0
         version: link:../ui-token-activity
 

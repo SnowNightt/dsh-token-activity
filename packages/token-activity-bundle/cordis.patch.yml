@@ -1,4 +1,4 @@
-# @dsh-plugins/dsh-token-activity-bundle
+# @snownightt/dsh-token-activity-bundle
 # The token-activity profile bundle: mounts both the Host plugin and the Web
 # client plugin as one installable layer. Installing this package and listing
 # it in a profile's `dsh.profile.bundles` is all that is needed to enable the
@@ -11,10 +11,10 @@
 
 - insert:
     - id: token-activity
-      name: '@dsh-plugins/dsh-token-activity'
+      name: '@snownightt/dsh-token-activity'
       # config:                       # 可选；以下均为默认值
       #   timeZone: <Host IANA 时区>   # 自然日划分时区
       #   backfillConcurrency: 4       # 历史回填并发数
 
     - id: ui-token-activity
-      name: '@dsh-plugins/dsh-ui-token-activity'
+      name: '@snownightt/dsh-ui-token-activity'

@@ -27,7 +27,7 @@
 # --- The Host plugin: registers the tokenActivity projection, aggregates, and ---
 # --- backfills persisted history, then publishes the typed summary remote.      ---
 - id: token-activity
-  name: '@dsh-plugins/dsh-token-activity'
+  name: '@snownightt/dsh-token-activity'
   config:
     # Optional. Defaults to the Host's own IANA zone. Changes here bump the
     # projection stateVersion, which invalidates cached day buckets and re-folds.
@@ -40,4 +40,4 @@
 # (dsh-base + dsh-web-app); it is shown here as an ordinary plugin row for
 # readability.
 - id: ui-token-activity
-  name: '@dsh-plugins/dsh-ui-token-activity'
+  name: '@snownightt/dsh-ui-token-activity'

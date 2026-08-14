@@ -24,7 +24,7 @@
  *  - turn activity = sum of `turn/start` → `turn/end` durations (§4.5);
  *  - a step that ends with no usage sample counts as one unreported call (§4.6).
  *
- * @module @dsh-plugins/dsh-token-activity/core/fold
+ * @module @snownightt/dsh-token-activity/core/fold
  */
 
 import type { TokenUsageLike } from './token-usage.ts'

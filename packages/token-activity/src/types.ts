@@ -4,7 +4,7 @@
  * counts, activity durations, and failure counters — never message text,
  * tool arguments, or file paths (PRD §6.4, §9.3).
  *
- * @module @dsh-plugins/dsh-token-activity/types
+ * @module @snownightt/dsh-token-activity/types
  */
 
 import type { TokenActivityDay, TokenActivityModel, TokenActivityProjection } from './core/fold.ts'

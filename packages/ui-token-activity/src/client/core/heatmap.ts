@@ -2,7 +2,7 @@
  * Heatmap intensity and calendar-grid geometry (PRD FR-03/FR-04). Browser-safe
  * pure modules.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/core/heatmap
+ * @module @snownightt/dsh-ui-token-activity/client/core/heatmap
  */
 
 export type HeatmapLevel = 0 | 1 | 2 | 3 | 4

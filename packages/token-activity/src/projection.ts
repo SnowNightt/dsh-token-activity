@@ -11,7 +11,7 @@
  * version, which discards every stored checkpoint and forces a re-fold instead
  * of silently reusing days bucketed under the previous zone.
  *
- * @module @dsh-plugins/dsh-token-activity/projection
+ * @module @snownightt/dsh-token-activity/projection
  */
 
 import { z } from 'zod'

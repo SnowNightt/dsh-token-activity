@@ -4,7 +4,7 @@
  * concrete Harness runtime type (the `LocaleFace` is a structural subset) so
  * this wiring is unit-testable in isolation.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/TokenActivitySection
+ * @module @snownightt/dsh-ui-token-activity/client/TokenActivitySection
  */
 
 import { useSyncExternalStore } from 'react'

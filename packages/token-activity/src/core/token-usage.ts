@@ -10,7 +10,7 @@
  * therefore never adds `reasoningTokens` again — AC-04 pins this at 6,000 for
  * the 1,000 + 500 + 4,000 + 500 + 200 example, not 6,200.
  *
- * @module @dsh-plugins/dsh-token-activity/core/token-usage
+ * @module @snownightt/dsh-token-activity/core/token-usage
  */
 
 /** The minimal provider-reported usage shape the fold consumes. */

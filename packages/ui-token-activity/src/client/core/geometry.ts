@@ -2,7 +2,7 @@
  * Calendar-day arithmetic and GitHub-style heatmap grid geometry (PRD FR-03).
  * Browser-safe and pure: `Intl` only, no Host modules.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/core/geometry
+ * @module @snownightt/dsh-ui-token-activity/client/core/geometry
  */
 
 const OFFSET_FORMATTERS = new Map<string, Intl.DateTimeFormat>()

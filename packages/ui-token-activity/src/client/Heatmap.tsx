@@ -4,7 +4,7 @@
  * pointer-accessible per-day Tooltip. Each cell is a focusable button with an
  * accessible name carrying the full date and exact token count (AC-10).
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/Heatmap
+ * @module @snownightt/dsh-ui-token-activity/client/Heatmap
  */
 
 import { useCallback, useState } from 'react'

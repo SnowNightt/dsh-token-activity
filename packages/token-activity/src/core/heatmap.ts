@@ -5,7 +5,7 @@
  * `log1p` normalization, which keeps a single extreme peak from flattening
  * every ordinary day into the lowest bucket.
  *
- * @module @dsh-plugins/dsh-token-activity/core/heatmap
+ * @module @snownightt/dsh-token-activity/core/heatmap
  */
 
 /** 0 = neutral (no activity); 1..4 = ascending brand-color intensity. */

@@ -2,7 +2,7 @@
  * Locale-aware number/date/duration formatting for the token-activity page
  * (PRD FR-02, FR-05, §7.3). Pure and browser-safe (Intl only).
  *
- * @module @dsh-plugins/dsh-token-activity/core/format
+ * @module @snownightt/dsh-token-activity/core/format
  */
 
 /** Whether a BCP 47 locale tag is a Chinese variant (drives 万/亿 units). */

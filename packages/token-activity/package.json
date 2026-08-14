@@ -1,5 +1,5 @@
 {
-  "name": "@dsh-plugins/dsh-token-activity",
+  "name": "@snownightt/dsh-token-activity",
   "version": "0.1.0",
   "description": "DeepSeek Harness token-activity plugin (Host): session projection, aggregation, backfill, and the typed summary remote",
   "license": "UNLICENSED",

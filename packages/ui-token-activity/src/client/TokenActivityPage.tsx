@@ -3,7 +3,7 @@
  * backfill notices, the daily heatmap, and the color legend — with skeleton,
  * empty, error, and in-progress states (PRD FR-02/FR-03/FR-06, §7.1).
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/TokenActivityPage
+ * @module @snownightt/dsh-ui-token-activity/client/TokenActivityPage
  */
 
 import { useMemo } from 'react'

@@ -2,7 +2,7 @@
  * The five top metric cards (PRD FR-02, §7.1). Compact values on the card,
  * exact integers in the accessible name for token counts.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/MetricCards
+ * @module @snownightt/dsh-ui-token-activity/client/MetricCards
  */
 
 import type { TokenActivityMetrics } from './contract.ts'

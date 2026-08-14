@@ -1,11 +1,11 @@
 /**
- * `@dsh-plugins/dsh-token-activity` — Host plugin for the token-activity page.
+ * `@snownightt/dsh-token-activity` — Host plugin for the token-activity page.
  *
  * Load it in a Cordis composition (see `examples/cordis.yml`); it registers the
  * `tokenActivity` session projection, aggregates provider-reported usage, and
  * exposes the one-shot summary to the paired Web client package.
  *
- * @module @dsh-plugins/dsh-token-activity
+ * @module @snownightt/dsh-token-activity
  */
 
 import { TokenActivityService } from './service.ts'

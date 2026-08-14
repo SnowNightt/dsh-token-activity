@@ -2,7 +2,7 @@
  * Color-intensity legend (PRD §7.1). The four levels are always the same brand
  * hue; the legend labels "Less"/"More" match the current locale.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/Legend
+ * @module @snownightt/dsh-ui-token-activity/client/Legend
  */
 
 import type { TokenActivityTranslate } from './locales.ts'

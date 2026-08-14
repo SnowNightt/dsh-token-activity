@@ -4,7 +4,7 @@
  * `apply` registers these dictionaries and binds a typed translate; the
  * presentational components consume the bound `t`.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/locales
+ * @module @snownightt/dsh-ui-token-activity/client/locales
  */
 
 export interface TokenActivityLocaleKeys {

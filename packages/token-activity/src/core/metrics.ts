@@ -3,7 +3,7 @@
  * Pure and framework-free: the aggregate service (host side) feeds these
  * helpers, and every metric is recomputable from stored projections alone.
  *
- * @module @dsh-plugins/dsh-token-activity/core/metrics
+ * @module @snownightt/dsh-token-activity/core/metrics
  */
 
 import type { TokenActivityProjection } from './fold.ts'

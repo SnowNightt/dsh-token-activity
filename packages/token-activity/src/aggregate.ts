@@ -5,7 +5,7 @@
  * page digits stay replayable from the logs while the runtime keeps O(#active
  * day/model cells) instead of O(log bytes) (PRD §9.1, §9.3).
  *
- * @module @dsh-plugins/dsh-token-activity/aggregate
+ * @module @snownightt/dsh-token-activity/aggregate
  */
 
 import type { TokenActivityModel, TokenActivityProjection } from './core/fold.ts'

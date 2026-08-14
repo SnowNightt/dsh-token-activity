@@ -1,5 +1,5 @@
 /**
- * The Host plugin: `@dsh-plugins/dsh-token-activity`.
+ * The Host plugin: `@snownightt/dsh-token-activity`.
  *
  * A Cordis service that owns the `tokenActivity` session projection, folds
  * every committed event through it, aggregates the resulting per-session
@@ -13,7 +13,7 @@
  * cache stays a fold shortcut only: cache loss or invalidation (a zone change
  * bumps `stateVersion`) re-folds from the logs, never from memory alone.
  *
- * @module @dsh-plugins/dsh-token-activity
+ * @module @snownightt/dsh-token-activity
  */
 
 import { Context, Service } from '@deepseek-ai/cordis'

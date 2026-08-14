@@ -1,11 +1,11 @@
 /**
- * Client mirror of the Host's wire vocabulary (`@dsh-plugins/dsh-token-activity/types`).
+ * Client mirror of the Host's wire vocabulary (`@snownightt/dsh-token-activity/types`).
  * Kept local so the browser package typechecks and bundles without any Host
  * runtime import; the Host's `src/types.ts` is the canonical source and the
  * shapes below MUST stay in lock-step (a CI-friendly duplicate of a small,
  * stable contract).
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/contract
+ * @module @snownightt/dsh-ui-token-activity/client/contract
  */
 
 export interface TokenActivityModel {

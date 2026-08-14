@@ -4,7 +4,7 @@
  * Text stays selectable; the Heatmap owns open/close so the pointer may enter
  * this tooltip without it disappearing.
  *
- * @module @dsh-plugins/dsh-ui-token-activity/client/Tooltip
+ * @module @snownightt/dsh-ui-token-activity/client/Tooltip
  */
 
 import type { TooltipContent } from './tooltip-model.ts'

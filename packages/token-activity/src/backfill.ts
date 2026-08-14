@@ -3,7 +3,7 @@
  * fails independently: one corrupt or unreadable Session never aborts the
  * others, and the returned count is the exact number of failures.
  *
- * @module @dsh-plugins/dsh-token-activity/backfill
+ * @module @snownightt/dsh-token-activity/backfill
  */
 
 /**
