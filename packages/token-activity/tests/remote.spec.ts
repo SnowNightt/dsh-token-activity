@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import TYPERT_REMOTE from '../src/remote.ts'
+import { TYPERT } from '../src/typert.host.ts'
 import type { TokenActivitySummary } from '../src/types.ts'
 
 function summary(): TokenActivitySummary {
@@ -30,6 +31,16 @@ function summary(): TokenActivitySummary {
 }
 
 describe('tokenActivity Remote contribution', () => {
+  it('publishes a strict Host manifest through the same descriptors', () => {
+    expect(TYPERT).toMatchObject({
+      package: '@snownightt/dsh-token-activity',
+      face: 'host',
+      schemas: [],
+      model: { services: [], events: [], objects: [] },
+    })
+    expect(TYPERT.invocations).toBe(TYPERT_REMOTE.descriptors)
+  })
+
   it('publishes the summary endpoint under the expected namespace', () => {
     expect(TYPERT_REMOTE.package).toBe('@snownightt/dsh-token-activity')
     expect(TYPERT_REMOTE.descriptors).toHaveLength(1)
