@@ -4,25 +4,27 @@
 
 ---
 
-## 1. 插件功能
+## 插件功能
 
 - 设置界面新增一级导航「使用量 / Usage」，两次交互以内进入页面。
 - 顶部两项指标卡：累计 Token、峰值 Token。
-- 最近 365 个本地自然日的每日热力图（按周分列、周一至周日），跨年月份标签连续排列。
-- 单日 Tooltip：日期、当日总量、当日全部模型及各自 Token（按 Token 降序，同名模型按 `Provider · Model` 消歧）。
+- 最近 365 个本地自然日的每日热力图，跨年月份标签连续排列。
+- 单日 Tooltip：日期、当日总量、当日全部模型及各自 Token。
 - 历史会话自动回填（受限并发，默认 4），回填进度实时展示；单会话失败不影响整体。
-- 全键盘可访问：Tab 聚焦日期格、Escape 关闭 Tooltip；每个格子带完整日期与 Token 数的无障碍名称。
-- 严格隐私：只统计日期、Provider ID、Model ID、Token 数、活动时长和失败计数，不读取/存储/传输任何提示词、回复正文、工具参数或文件路径。
+
+### 效果预览
+
+![DeepSeek Harness Token 活动热力图效果预览](docs/images/token-activity-preview.png)
 
 ---
 
-## 2. 安装
+## 安装
 
-### 2.1 环境要求
+### 环境要求
 
 - Node.js `^22.19.0 || >=24.0.0`
 
-### 2.2 从 npm 安装（推荐）
+### 从 npm 安装（推荐）
 
 安装聚合包：
 
@@ -43,7 +45,7 @@ pnpm dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.0
 pnpm dsh web
 ```
 
-### 2.3 从本地源码安装到 DeepSeek Harness
+### 从本地源码安装到 DeepSeek Harness
 
 推荐将两个仓库放在同一父目录。
 
@@ -76,7 +78,7 @@ token-activity
 ui-token-activity
 ```
 
-### 2.4 卸载
+### 卸载
 
 从 npm 安装时：
 
@@ -96,9 +98,6 @@ pnpm dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle @snow
 
 
 
-## 3. 隐私与安全
+## PS
+目前仍处于开发中，各方面或许不够完善，欢迎大家提issue！
 
-- 统计内容仅含：日期、Provider ID、Model ID、Token 数量、活动时长、失败/跳过计数。
-- **不**持久化、不读取、不传输：消息正文、工具参数、文件路径、密钥。
-- 插件不新增任何遥测上传或云端同步。
-- 远程浏览器只能访问 Host 已授权暴露的聚合结果，不能借此读取原始日志。
