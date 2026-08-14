@@ -24,6 +24,12 @@
 
 - Node.js `^22.19.0 || >=24.0.0`
 
+如果终端提示找不到 `dsh` 命令，请先全局安装 DSH CLI：
+
+```sh
+npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
+```
+
 ### 从 npm 安装（推荐）
 
 安装聚合包：
@@ -100,4 +106,3 @@ pnpm dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle @snow
 
 ## PS
 目前仍处于开发中，各方面或许不够完善，欢迎大家提issue！
-
