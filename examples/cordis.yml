@@ -1,0 +1,43 @@
+# Minimal token-activity composition (illustrative; not a full product profile).
+# Shows the required mount order and default configuration for the two plugin
+# packages. Replace the persistence backend and the web-app bundle rows with
+# your own deployment's equivalents; no API keys, user directories, or real
+# session data belong here.
+
+# --- Prerequisites the Host plugin injects (their ids are stable service keys) ---
+
+# The projection registry: every token-activity fold is driven through it.
+- id: session-projection
+  name: '@deepseek-ai/dsh-session-projection'
+
+# The persisted projection cache: the backfill ladder reads cached checkpoints
+# plus a persistence tail instead of rescanning whole logs.
+- id: session-projection-cache
+  name: '@deepseek-ai/dsh-session-projection-cache'
+  config:
+    writeEveryEvents: 8
+    writeIntervalMs: 2000
+
+# One persistence backend (jsonl here; sqlite works identically).
+- id: session-persistence
+  name: '@deepseek-ai/dsh-session-persistence-jsonl'
+  config:
+    root: './.sessions'
+
+# --- The Host plugin: registers the tokenActivity projection, aggregates, and ---
+# --- backfills persisted history, then publishes the typed summary remote.      ---
+- id: token-activity
+  name: '@dsh-plugins/dsh-token-activity'
+  config:
+    # Optional. Defaults to the Host's own IANA zone. Changes here bump the
+    # projection stateVersion, which invalidates cached day buckets and re-folds.
+    timeZone: 'Asia/Shanghai'
+    # Optional. Defaults to 4. Bounds concurrent Session reads during backfill.
+    backfillConcurrency: 4
+
+# --- The Web client plugin: registers the "使用量 / Usage" settings section.   ---
+# In a real profile this row is consumed by the Web app bundle layer
+# (dsh-base + dsh-web-app); it is shown here as an ordinary plugin row for
+# readability.
+- id: ui-token-activity
+  name: '@dsh-plugins/dsh-ui-token-activity'

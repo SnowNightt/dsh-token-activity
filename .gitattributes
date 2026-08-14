@@ -1,0 +1,2 @@
+# Normalize line endings across platforms (mirrors the DeepSeek Harness repo).
+* text=auto eol=lf
