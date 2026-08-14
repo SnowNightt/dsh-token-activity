@@ -89,13 +89,6 @@ ui-token-activity
 ```sh
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 ```
-
-本地安装则执行：
-
-```sh
-pnpm dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle @snownightt/dsh-token-activity @snownightt/dsh-ui-token-activity
-```
-
 卸载后重启。
 
 ---
