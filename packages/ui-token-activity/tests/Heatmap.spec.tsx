@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { render, screen, fireEvent } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { Heatmap } from '../src/client/Heatmap.tsx'
 import { buildHeatmapGrid, recentDayKeys } from '../src/client/core/geometry.ts'
 import { formatMonthLabel } from '../src/client/core/format.ts'
@@ -30,6 +30,17 @@ describe('Heatmap (FR-03/FR-04/FR-05, AC-10)', () => {
     expect(screen.getAllByRole('button')).toHaveLength(7)
   })
 
+  it('uses the compact grid dimensions that fit a full year in the usage panel', () => {
+    render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
+    const cell = screen.getAllByRole('button')[0]!
+    const gridElement = cell.parentElement!
+
+    expect(gridElement.style.gridAutoColumns).toBe('8px')
+    expect(gridElement.style.gap).toBe('2px')
+    expect(cell.style.width).toBe('8px')
+    expect(cell.style.height).toBe('8px')
+  })
+
   it('gives each cell an accessible name with the date and exact tokens', () => {
     render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
     const peak = screen.getByRole('button', { name: /August 14, 2026: 30,000 tokens/ })
@@ -50,6 +61,19 @@ describe('Heatmap (FR-03/FR-04/FR-05, AC-10)', () => {
     expect(screen.queryByRole('tooltip')).toBeNull()
   })
 
+  it('does not add a selection outline on hover or focus', () => {
+    render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
+    const peak = screen.getByRole('button', { name: /August 14, 2026: 30,000 tokens/ })
+    const cell = peak.firstElementChild as HTMLElement
+
+    fireEvent.mouseEnter(peak)
+    fireEvent.focus(peak)
+
+    expect(peak.style.outline).toBe('none')
+    expect(cell.style.outline).toBe('')
+    expect(cell.style.outlineOffset).toBe('')
+  })
+
   it('lists every model with correct sort order', () => {
     render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
     const peak = screen.getByRole('button', { name: /30,000 tokens/ })
@@ -58,5 +82,35 @@ describe('Heatmap (FR-03/FR-04/FR-05, AC-10)', () => {
     expect(rows).toHaveLength(2)
     expect(rows[0]!.textContent).toContain('deepseek-v4-pro')
     expect(rows[1]!.textContent).toContain('gpt-5.6')
+  })
+
+  it('renders the tooltip outside the scrolling grid and keeps it inside the viewport', () => {
+    const rect = (values: Partial<DOMRect>): DOMRect => ({
+      bottom: 114,
+      height: 14,
+      left: 1000,
+      right: 1014,
+      top: 100,
+      width: 14,
+      x: 1000,
+      y: 100,
+      toJSON: () => ({}),
+      ...values,
+    })
+    const getRect = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function (this: HTMLElement) {
+        return this.getAttribute('role') === 'tooltip'
+          ? rect({ bottom: 100, height: 100, left: 0, right: 220, top: 0, width: 220, x: 0, y: 0 })
+          : rect({})
+      })
+
+    render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
+    fireEvent.mouseEnter(screen.getByRole('button', { name: /August 14, 2026: 30,000 tokens/ }))
+    const tooltip = screen.getByRole('tooltip')
+    expect(tooltip.parentElement).toBe(document.body)
+    expect(tooltip.style.position).toBe('fixed')
+    expect(tooltip.style.left).toBe('796px')
+
+    getRect.mockRestore()
   })
 })

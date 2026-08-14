@@ -7,7 +7,7 @@
  * @module @snownightt/dsh-ui-token-activity/client/Heatmap
  */
 
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { HeatmapGrid } from './core/geometry.ts'
 import { heatmapLevel } from './core/heatmap.ts'
 import { formatDayKey, formatInteger } from './core/format.ts'
@@ -15,8 +15,9 @@ import type { TokenActivitySummaryDay } from './contract.ts'
 import { buildTooltipContent } from './tooltip-model.ts'
 import { Tooltip } from './Tooltip.tsx'
 
-const CELL = 14
-const GAP = 3
+// 53 week columns fit inside the Harness usage panel without horizontal scrolling.
+const CELL = 8
+const GAP = 2
 const LEVEL_COLORS: Record<number, string> = {
   0: 'var(--dsw-heat-0, #e5e7eb)',
   1: 'var(--dsw-heat-1, #c7d9ff)',
@@ -35,8 +36,29 @@ export interface HeatmapProps {
 
 export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: HeatmapProps) {
   const [activeDate, setActiveDate] = useState<string | null>(null)
-  const open = useCallback((date: string) => { if (date !== '') setActiveDate(date) }, [])
-  const close = useCallback(() => setActiveDate(null), [])
+  const [activeAnchor, setActiveAnchor] = useState<HTMLElement | null>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current === null) return
+    clearTimeout(closeTimer.current)
+    closeTimer.current = null
+  }, [])
+  const open = useCallback((date: string, anchor: HTMLElement) => {
+    if (date === '') return
+    cancelClose()
+    setActiveDate(date)
+    setActiveAnchor(anchor)
+  }, [cancelClose])
+  const close = useCallback(() => {
+    cancelClose()
+    setActiveDate(null)
+    setActiveAnchor(null)
+  }, [cancelClose])
+  const scheduleClose = useCallback(() => {
+    cancelClose()
+    closeTimer.current = setTimeout(close, 100)
+  }, [cancelClose, close])
+  useEffect(() => () => cancelClose(), [cancelClose])
   const activeContent = activeDate === null ? null : buildTooltipContent(activeDate, resolveDay(activeDate), locale)
 
   return (
@@ -86,14 +108,14 @@ export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: H
               role="button"
               tabIndex={0}
               aria-label={label}
-              aria-haspopup="dialog"
-              onMouseEnter={() => open(cell.date)}
-              onMouseLeave={close}
-              onFocus={() => open(cell.date)}
+              aria-describedby={active ? 'token-activity-tooltip' : undefined}
+              onMouseEnter={event => open(cell.date, event.currentTarget)}
+              onMouseLeave={scheduleClose}
+              onFocus={event => open(cell.date, event.currentTarget)}
               onBlur={close}
-              onClick={() => open(cell.date)}
+              onClick={event => open(cell.date, event.currentTarget)}
               onKeyDown={(event) => { if (event.key === 'Escape') close() }}
-              style={{ position: 'relative', width: CELL, height: CELL }}
+              style={{ position: 'relative', width: CELL, height: CELL, outline: 'none' }}
             >
               <div
                 style={{
@@ -101,22 +123,20 @@ export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: H
                   height: CELL,
                   borderRadius: 3,
                   background: LEVEL_COLORS[level],
-                  outline: active ? '2px solid var(--dsw-focus, #2563eb)' : 'none',
-                  outlineOffset: 2,
                 }}
               />
-              {active && (
-                <div
-                  style={{ position: 'absolute', bottom: CELL + GAP, left: 0, pointerEvents: 'auto' }}
-                  onMouseEnter={() => open(cell.date)}
-                >
-                  <Tooltip content={activeContent!} />
-                </div>
-              )}
             </div>
           )
         })}
       </div>
+      {activeContent !== null && activeAnchor !== null && (
+        <Tooltip
+          content={activeContent}
+          anchor={activeAnchor}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
+        />
+      )}
     </div>
   )
 }

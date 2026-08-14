@@ -1,5 +1,5 @@
 /**
- * The token-activity settings page: five metric cards, optional coverage /
+ * The token-activity settings page: two metric cards, optional coverage /
  * backfill notices, the daily heatmap, and the color legend — with skeleton,
  * empty, error, and in-progress states (PRD FR-02/FR-03/FR-06, §7.1).
  *
@@ -94,7 +94,7 @@ function buildModel(summary: TokenActivitySummary, locale: string) {
 }
 
 function Skeleton() {
-  const bars = [0, 1, 2, 3, 4]
+  const bars = [0, 1]
   return (
     <div role="status" aria-label="loading" style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 16 }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>

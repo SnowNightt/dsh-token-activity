@@ -12,10 +12,6 @@ export interface TokenActivityLocaleKeys {
   title: string
   metricTotal: string
   metricPeak: string
-  metricLongestChat: string
-  metricCurrentStreak: string
-  metricLongestStreak: string
-  days: string
   empty: string
   errorTitle: string
   retry: string
@@ -34,10 +30,6 @@ export const zh: Record<TokenActivityKey, string> = {
   title: 'Token 活动',
   metricTotal: '累计 Token',
   metricPeak: '峰值 Token',
-  metricLongestChat: '最长聊天',
-  metricCurrentStreak: '当前连续',
-  metricLongestStreak: '最长连续',
-  days: '天',
   empty: '暂无 Token 使用记录',
   errorTitle: '数据读取失败',
   retry: '重试',
@@ -53,10 +45,6 @@ export const en: Record<TokenActivityKey, string> = {
   title: 'Token activity',
   metricTotal: 'Total tokens',
   metricPeak: 'Peak tokens',
-  metricLongestChat: 'Longest chat',
-  metricCurrentStreak: 'Current streak',
-  metricLongestStreak: 'Longest streak',
-  days: 'days',
   empty: 'No token usage yet',
   errorTitle: 'Failed to load',
   retry: 'Retry',

@@ -7,19 +7,64 @@
  * @module @snownightt/dsh-ui-token-activity/client/Tooltip
  */
 
+import { useLayoutEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import type { TooltipContent } from './tooltip-model.ts'
+
+const VIEWPORT_GAP = 8
+const ANCHOR_GAP = 8
 
 export interface TooltipProps {
   content: TooltipContent
+  anchor: HTMLElement
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
-export function Tooltip({ content }: TooltipProps) {
-  return (
+export function Tooltip({ content, anchor, onMouseEnter, onMouseLeave }: TooltipProps) {
+  const tooltipRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const position = () => {
+      const tooltip = tooltipRef.current
+      if (tooltip === null) return
+
+      const anchorRect = anchor.getBoundingClientRect()
+      const tooltipRect = tooltip.getBoundingClientRect()
+      const maxLeft = Math.max(VIEWPORT_GAP, window.innerWidth - tooltipRect.width - VIEWPORT_GAP)
+      const left = Math.min(Math.max(anchorRect.left, VIEWPORT_GAP), maxLeft)
+      const above = anchorRect.top - tooltipRect.height - ANCHOR_GAP
+      const top = above >= VIEWPORT_GAP
+        ? above
+        : Math.min(anchorRect.bottom + ANCHOR_GAP, window.innerHeight - tooltipRect.height - VIEWPORT_GAP)
+
+      tooltip.style.left = `${left}px`
+      tooltip.style.top = `${Math.max(VIEWPORT_GAP, top)}px`
+      tooltip.style.visibility = 'visible'
+    }
+
+    position()
+    window.addEventListener('resize', position)
+    window.addEventListener('scroll', position, true)
+    return () => {
+      window.removeEventListener('resize', position)
+      window.removeEventListener('scroll', position, true)
+    }
+  }, [anchor, content])
+
+  return createPortal(
     <div
+      ref={tooltipRef}
+      id="token-activity-tooltip"
       role="tooltip"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       style={{
-        position: 'absolute',
-        zIndex: 10,
+        position: 'fixed',
+        zIndex: 1000,
+        left: 0,
+        top: 0,
+        visibility: 'hidden',
         minWidth: 220,
         maxWidth: 320,
         padding: '10px 12px',
@@ -30,6 +75,7 @@ export function Tooltip({ content }: TooltipProps) {
         lineHeight: 1.5,
         pointerEvents: 'auto',
         userSelect: 'text',
+        boxSizing: 'border-box',
       }}
     >
       <div style={{ fontWeight: 600 }}>{content.date}</div>
@@ -62,6 +108,7 @@ export function Tooltip({ content }: TooltipProps) {
           ))}
         </ul>
       )}
-    </div>
+    </div>,
+    document.body,
   )
 }

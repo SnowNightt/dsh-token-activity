@@ -1,5 +1,5 @@
 /**
- * The five top metric cards (PRD FR-02, §7.1). Compact values on the card,
+ * The two top token metric cards. Compact values on the card,
  * exact integers in the accessible name for token counts.
  *
  * @module @snownightt/dsh-ui-token-activity/client/MetricCards
@@ -7,7 +7,7 @@
 
 import type { TokenActivityMetrics } from './contract.ts'
 import type { TokenActivityTranslate } from './locales.ts'
-import { formatCompactTokens, formatDuration, formatInteger } from './core/format.ts'
+import { formatCompactTokens, formatInteger } from './core/format.ts'
 
 export interface MetricCardsProps {
   metrics: TokenActivityMetrics
@@ -19,9 +19,6 @@ export function MetricCards({ metrics, locale, t }: MetricCardsProps) {
   const cards = [
     { label: t('metricTotal'), value: formatCompactTokens(metrics.totalTokens, locale), full: formatInteger(metrics.totalTokens, locale) },
     { label: t('metricPeak'), value: formatCompactTokens(metrics.peakDailyTokens, locale), full: formatInteger(metrics.peakDailyTokens, locale) },
-    { label: t('metricLongestChat'), value: formatDuration(metrics.longestActiveChatMs, locale), full: formatDuration(metrics.longestActiveChatMs, locale) },
-    { label: t('metricCurrentStreak'), value: `${metrics.currentStreakDays} ${t('days')}`, full: `${metrics.currentStreakDays} ${t('days')}` },
-    { label: t('metricLongestStreak'), value: `${metrics.longestStreakDays} ${t('days')}`, full: `${metrics.longestStreakDays} ${t('days')}` },
   ]
 
   return (
