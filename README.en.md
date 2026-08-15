@@ -40,7 +40,7 @@ npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
 Install the npm package:
 
 ```sh
-# Run PowerShell as an administrator
+# Run as an administrator
 dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 ```
 
@@ -136,7 +136,7 @@ Restart after uninstalling.
 # Remove the old package first
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 
-# Install the new package. Run PowerShell as Administrator
+# Install the new package. Run as Administrator
 dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 ```
 

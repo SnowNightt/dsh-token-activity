@@ -38,7 +38,7 @@ npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
 ### 从 npm 安装
 
 ```sh
-# 以管理员身份运行PowerShell
+# 以管理员身份运行
 dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 ```
 
@@ -140,7 +140,7 @@ dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 # 先删除旧包
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 
-# 安装新包，以管理员身份运行PowerShell
+# 安装新包，以管理员身份运行
 dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 ```
 
