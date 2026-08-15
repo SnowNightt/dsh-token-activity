@@ -1,6 +1,6 @@
 {
-  "name": "dsh-token-activity-root",
-  "version": "0.1.0",
+  "name": "dsh-token-activity",
+  "version": "0.1.1",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -14,6 +14,15 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "clean": "pnpm -r exec rm -rf lib coverage .vitest"
+  },
+  "dependencies": {
+    "@snownightt/dsh-token-activity": "^0.1.1",
+    "@snownightt/dsh-ui-token-activity": "^0.1.1"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./packages/token-activity-bundle/cordis.patch.yml"
+    }
   },
   "devDependencies": {
     "@types/node": "^22.20.0",

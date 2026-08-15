@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@snownightt/dsh-token-activity':
+        specifier: ^0.1.1
+        version: link:packages/token-activity
+      '@snownightt/dsh-ui-token-activity':
+        specifier: ^0.1.1
+        version: link:packages/ui-token-activity
     devDependencies:
       '@types/node':
         specifier: ^22.20.0

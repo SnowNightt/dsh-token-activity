@@ -1,3 +1,5 @@
+**中文** | [English](README.en.md)
+
 # DeepSeek Harness Token 消耗热力图插件
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -20,11 +22,27 @@
 
 ---
 
+## 兼容性
+
+| 项目 | 已验证版本 |
+| --- | --- |
+| DeepSeek Harness | `@deepseek-ai/dsh@0.1.0-rc.6` |
+| DSH 源码快照 | [`47f943859bef`](https://github.com/deepseek-ai/deepseek-harness/commit/47f943859bef60e4160492346772ded9b24f765a) |
+| 插件版本 | `0.1.1` |
+| Node.js | `24.18.0` |
+| pnpm | `11.7.0` |
+| 最后验证日期 | `2026-08-15` |
+
+上述环境已验证插件可以安装和加载，Web 设置页面能够显示「使用量」入口，并可完成历史会话 Token 数据回填及热力图展示。
+
+---
+
 ## 安装
 
 ### 环境要求
 
-- Node.js `^22.19.0 || >=24.0.0`
+- Node.js `>=24.0.0`
+- pnpm `11.7.0`
 
 如果终端提示找不到 `dsh` 命令，请先全局安装 DSH CLI：
 
@@ -48,7 +66,55 @@ dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.1
 pnpm dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
 ```
 
-### 本地开发
+## 快速开始
+
+1. 安装插件后，启动或重启 DeepSeek Harness Web 服务：
+
+   ```sh
+   dsh web
+   ```
+
+   如果你是在 DeepSeek Harness 源码目录中运行，请使用：
+
+   ```sh
+   pnpm dsh web
+   ```
+
+2. 在浏览器中打开 DeepSeek Harness Web 界面,进入「设置」，点击一级导航中的「使用量」。
+
+3. 首次打开时，插件会自动回填历史会话数据。等待页面上的回填进度完成；单个会话读取失败不会中断其他数据的统计。
+
+4. 回填完成后，页面应显示：
+
+   - 累计 Token 数；
+   - 单日峰值 Token 数；
+   - 最近 365 个本地自然日的 Token 使用热力图；
+   - 将鼠标悬停在任意日期上时，显示当天总 Token 数及当天使用过的各模型用量。
+
+### 验证安装
+
+执行以下命令检查组合配置：
+
+```sh
+dsh --profile web --dump-config
+```
+
+如果你是在 DeepSeek Harness 源码目录中运行，请使用：
+
+```sh
+pnpm dsh --profile web --dump-config
+```
+
+输出中应同时包含：
+
+```text
+token-activity
+ui-token-activity
+```
+
+如果配置中包含上述两个插件，但「设置 → 使用量」没有出现，请重启 DeepSeek Harness Web 服务并刷新浏览器页面。
+
+## 本地开发
 
 若是本地启动 Deepseek Harness 并且 git clone 本仓库，推荐将 Deepseek Harness 和本项目放在同一父目录。
 
@@ -69,20 +135,9 @@ pnpm dsh plugin --profile web add ../dsh-token-activity/packages/token-activity 
 
 如果 Deepseek Harness 和本项目没在同一父级目录下，上面的安装命令中路径部分自行调整。
 
-安装成功后检查组合配置：
+本地开发后插件需要重新打包然后重启 Deepseek Harness
 
-```sh
-pnpm dsh --profile web --dump-config
-```
-
-只要配置中同时出现以下两个插件行，就说明安装成功，然后启动 Deepseek Harness：
-
-```text
-token-activity
-ui-token-activity
-```
-
-### 卸载
+## 卸载
 
 从 npm 安装则执行：
 
