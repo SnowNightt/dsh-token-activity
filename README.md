@@ -37,19 +37,12 @@ npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
 
 ### 从 npm 安装
 
-安装npm包：
-
 ```sh
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.1
+# 以管理员身份运行PowerShell
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 ```
 
 安装完成后重启 DeepSeek Harness。
-
-如果你的 DeepSeek Harness 是本地运行的，则在 Deepseek Harness 根目录下执行安装命令：
-
-```sh
-pnpm dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
-```
 
 ## 快速开始
 
@@ -129,7 +122,28 @@ pnpm dsh plugin --profile web add ../dsh-token-activity/packages/token-activity 
 ```sh
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 ```
+
+本地卸载：
+
+```sh
+# 需在 Deepseek Harness 目录下执行
+ pnpm dsh plugin --profile web remove @snownightt/dsh-token-activity @snownightt/dsh-token-activity-bundle @snownightt/dsh-ui-token-activity  
+
+ # 可在任意目录执行
+ dsh plugin --profile web remove @snownightt/dsh-token-activity @snownightt/dsh-token-activity-bundle @snownightt/dsh-ui-token-activity
+```
+
 卸载后重启。
+
+## 更新
+```sh
+# 先删除旧包
+dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
+
+# 安装新包，以管理员身份运行PowerShell
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
+```
+
 
 ---
 
@@ -147,7 +161,3 @@ dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 
 已写入日志的普通会话模型调用会按 `input + output + cache read + cache write` 统计。未来版本会逐步扩大辅助调用的覆盖范围，但不同提供商的账单口径、缓存规则和可用用量接口仍可能导致与官方账户数据存在差异。
 
----
-
-## PS
-目前仍处于开发中，各方面或许不够完善，欢迎大家提issue！谢谢喵！

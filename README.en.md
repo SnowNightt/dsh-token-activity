@@ -40,16 +40,11 @@ npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
 Install the npm package:
 
 ```sh
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.1
+# Run PowerShell as an administrator
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 ```
 
 Restart DeepSeek Harness after installation.
-
-If your DeepSeek Harness is running locally, run the install command in the DeepSeek Harness root directory:
-
-```sh
-pnpm dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
-```
 
 ## Quick Start
 
@@ -127,9 +122,23 @@ The locally developed add-on needs to be re-packaged and then the Deepseek Harne
 If installed from npm, run:
 
 ```sh
-dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
+# It needs to be executed in the Deepseek Harness directory.
+ pnpm dsh plugin --profile web remove @snownightt/dsh-token-activity @snownightt/dsh-token-activity-bundle @snownightt/dsh-ui-token-activity  
+
+ # Can be executed in any directory
+ dsh plugin --profile web remove @snownightt/dsh-token-activity @snownightt/dsh-token-activity-bundle @snownightt/dsh-ui-token-activity
 ```
 Restart after uninstalling.
+
+
+## Update
+```sh
+# Remove the old package first
+dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
+
+# Install the new package. Run PowerShell as Administrator
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
+```
 
 ---
 
@@ -147,7 +156,3 @@ In the current version, the following situations may cause the plugin's statisti
 
 For ordinary logged session model calls, the plugin counts `input + output + cache read + cache write`. Future releases will expand coverage of auxiliary calls, but provider-specific billing rules, cache behavior, and available usage APIs can still differ from the official account data.
 
----
-
-## PS
-This is still under development and may not be perfect in all aspects. Issues are welcome! Thanks!

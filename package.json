@@ -1,6 +1,6 @@
 {
   "name": "dsh-token-activity",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -16,8 +16,8 @@
     "clean": "pnpm -r exec rm -rf lib coverage .vitest"
   },
   "dependencies": {
-    "@snownightt/dsh-token-activity": "^0.1.1",
-    "@snownightt/dsh-ui-token-activity": "^0.1.1"
+    "@snownightt/dsh-token-activity": "^0.1.2",
+    "@snownightt/dsh-ui-token-activity": "^0.1.2"
   },
   "dsh": {
     "bundle": {
