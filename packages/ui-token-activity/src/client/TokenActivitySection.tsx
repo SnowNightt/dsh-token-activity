@@ -7,7 +7,7 @@
  * @module @snownightt/dsh-ui-token-activity/client/TokenActivitySection
  */
 
-import { useSyncExternalStore } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import type { TokenActivityStore } from './store.ts'
 import type { TokenActivityTranslate } from './locales.ts'
 import { TokenActivityPage } from './TokenActivityPage.tsx'
@@ -33,5 +33,13 @@ export function TokenActivitySection({ store, t, locale }: TokenActivitySectionI
     listener => locale.subscribe(listener),
     () => locale.getSnapshot().active,
   )
+
+  // The settings shell mounts this section only while it is the active,
+  // visible panel, so a mount is the "user is viewing the heatmap" signal:
+  // refresh now instead of waiting for a page reload.
+  useEffect(() => {
+    store.refresh()
+  }, [store])
+
   return <TokenActivityPage status={status} locale={activeLocale} t={t} onRetry={() => store.retry()} />
 }

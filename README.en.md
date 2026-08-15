@@ -1,6 +1,6 @@
 [中文](README.md) | **English**
 
-# DeepSeek Harness Token Consumption Heatmap Plugin
+# dsh-token-activity Token Consumption Heatmap Plugin
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -19,21 +19,6 @@
 ### Preview
 
 ![DeepSeek Harness Token Activity Heatmap Preview](docs/images/token-activity-preview.png)
-
----
-
-## Compatibility
-
-| Component | Verified version |
-| --- | --- |
-| DeepSeek Harness | `@deepseek-ai/dsh@0.1.0-rc.6` |
-| DSH source snapshot | [`47f943859bef`](https://github.com/deepseek-ai/deepseek-harness/commit/47f943859bef60e4160492346772ded9b24f765a) |
-| Plugin | `0.1.1` |
-| Node.js | `24.18.0` |
-| pnpm | `11.7.0` |
-| Last verified | `2026-08-15` |
-
-In the environment above, the plugin was verified to install and load successfully, expose the "Usage" entry in the Web settings page, backfill historical session Token data, and render the activity heatmap.
 
 ---
 
@@ -145,6 +130,22 @@ If installed from npm, run:
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 ```
 Restart after uninstalling.
+
+---
+
+## Known Limitations
+
+This plugin derives Token usage from DeepSeek Harness **session logs**. It does not read an API provider's account billing records directly. Its cumulative value therefore means "Token usage recorded in Harness sessions," not provider-account usage. Always use the provider's official platform for charges, balances, and final billing.
+
+In the current version, the following situations may cause the plugin's statistics values to be inconsistent with the actual values on the official platform.:
+
+- Auxiliary model calls, such as automatic title generation and context compaction, may not be fully included in session-activity accounting.
+- DeepSeek native web search makes additional model calls, but its response usage is not currently persisted to this plugin's data source.
+- Failed, cancelled, or retried requests are counted only when Harness persisted their `usage` in the session log.
+- The displayed result can be temporarily incomplete while historical backfill is failing.
+- Calls made with the same API key by other applications, scripts, or services are outside the plugin's visibility.
+
+For ordinary logged session model calls, the plugin counts `input + output + cache read + cache write`. Future releases will expand coverage of auxiliary calls, but provider-specific billing rules, cache behavior, and available usage APIs can still differ from the official account data.
 
 ---
 

@@ -74,4 +74,73 @@ describe('TokenActivityStore (FR-06)', () => {
     store.dispose()
     vi.useRealTimers()
   })
+
+  it('refresh re-fetches without flashing a loading state', async () => {
+    let tokens = 1
+    const store = new TokenActivityStore({
+      fetchSummary: async () => {
+        const value = summary()
+        value.metrics.totalTokens = tokens
+        return value
+      },
+    })
+    await store.load()
+    expect(store.getSnapshot().kind).toBe('ready')
+
+    tokens = 2
+    store.refresh()
+    // No loading flash: the snapshot stays ready synchronously.
+    expect(store.getSnapshot().kind).toBe('ready')
+    await vi.waitFor(() => {
+      const snap = store.getSnapshot()
+      expect(snap.kind === 'ready' && snap.summary.metrics.totalTokens).toBe(2)
+    })
+  })
+
+  it('refresh keeps the current ready view on a transient failure', async () => {
+    let calls = 0
+    const store = new TokenActivityStore({
+      fetchSummary: async () => {
+        calls += 1
+        if (calls >= 2) throw new Error('transient')
+        return summary()
+      },
+    })
+    await store.load()
+    expect(store.getSnapshot().kind).toBe('ready')
+    const before = store.getSnapshot()
+
+    store.refresh()
+    await vi.waitFor(() => expect(calls).toBe(2))
+    expect(store.getSnapshot()).toBe(before)
+  })
+
+  it('drops a stale refresh result when a newer refresh supersedes it', async () => {
+    let resolveStale: (value: TokenActivitySummary) => void = () => {}
+    const stale = new Promise<TokenActivitySummary>(resolve => { resolveStale = resolve })
+    const fresh = summary()
+    fresh.metrics.totalTokens = 999
+    let calls = 0
+    const store = new TokenActivityStore({
+      fetchSummary: async () => {
+        calls += 1
+        if (calls === 1) return summary()
+        if (calls === 2) return stale
+        return fresh
+      },
+    })
+    await store.load()
+
+    store.refresh() // hangs on `stale`
+    store.refresh() // resolves immediately with `fresh`
+    await vi.waitFor(() => {
+      const snap = store.getSnapshot()
+      expect(snap.kind === 'ready' && snap.summary.metrics.totalTokens).toBe(999)
+    })
+
+    resolveStale(summary()) // the superseded result lands late
+    await new Promise(resolve => setTimeout(resolve, 0))
+    const snap = store.getSnapshot()
+    expect(snap.kind === 'ready' && snap.summary.metrics.totalTokens).toBe(999)
+  })
 })

@@ -1,6 +1,6 @@
 **中文** | [English](README.en.md)
 
-# DeepSeek Harness Token 消耗热力图插件
+# dsh-token-activity Token 消耗热力图插件
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -19,21 +19,6 @@
 ### 效果预览
 
 ![DeepSeek Harness Token 活动热力图效果预览](docs/images/token-activity-preview.png)
-
----
-
-## 兼容性
-
-| 项目 | 已验证版本 |
-| --- | --- |
-| DeepSeek Harness | `@deepseek-ai/dsh@0.1.0-rc.6` |
-| DSH 源码快照 | [`47f943859bef`](https://github.com/deepseek-ai/deepseek-harness/commit/47f943859bef60e4160492346772ded9b24f765a) |
-| 插件版本 | `0.1.1` |
-| Node.js | `24.18.0` |
-| pnpm | `11.7.0` |
-| 最后验证日期 | `2026-08-15` |
-
-上述环境已验证插件可以安装和加载，Web 设置页面能够显示「使用量」入口，并可完成历史会话 Token 数据回填及热力图展示。
 
 ---
 
@@ -148,7 +133,21 @@ dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 
 ---
 
+## 已知限制
 
+本插件基于 DeepSeek Harness 的**会话日志**统计已记录的模型调用 Token，并不直接读取 API 提供商的账户账单。因此，插件显示的累计量应理解为「Harness 会话已记录 Token」，不能替代提供商平台的账户用量；涉及费用、余额或最终计费时，请始终以 API 提供商官方平台为准。
+
+在当前版本中，以下情况可能使插件统计值与官方平台现实的值不一致：
+
+- 自动标题生成、上下文压缩等辅助模型调用可能未完整计入会话活动统计；
+- 网页搜索会产生额外模型调用，但其响应 Token 用量目前不会写入本插件的统计来源；
+- 失败、取消或重试的请求只有在 Harness 会话日志中保存了 `usage` 时才会被统计；
+- 某个历史会话读取失败时，插件会跳过它，不影响其他会话继续统计；但该会话的 token 会缺失，直到之后成功重新回填。
+- API Key 被其他应用、脚本或服务使用的调用不在本插件的可见范围内。
+
+已写入日志的普通会话模型调用会按 `input + output + cache read + cache write` 统计。未来版本会逐步扩大辅助调用的覆盖范围，但不同提供商的账单口径、缓存规则和可用用量接口仍可能导致与官方账户数据存在差异。
+
+---
 
 ## PS
 目前仍处于开发中，各方面或许不够完善，欢迎大家提issue！谢谢喵！

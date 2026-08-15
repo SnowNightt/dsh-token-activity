@@ -26,6 +26,8 @@ export class TokenActivityStore {
   private readonly listeners = new Set<() => void>()
   private pollTimer: ReturnType<typeof setTimeout> | undefined
   private disposed = false
+  /** Monotonic request id: only the latest fetch may publish its result. */
+  private generation = 0
 
   constructor(options: TokenActivityStoreOptions) {
     this.fetchSummary = options.fetchSummary
@@ -43,15 +45,16 @@ export class TokenActivityStore {
 
   /** Load once; schedules polling while a backfill is running. */
   async load(): Promise<void> {
+    const generation = ++this.generation
     if (this.disposed) return
     try {
       const summary = await this.fetchSummary()
-      if (this.disposed) return
+      if (this.disposed || generation !== this.generation) return
       this.status = { kind: 'ready', summary }
       this.emit()
       this.schedulePollIfNeeded(summary)
     } catch (error) {
-      if (this.disposed) return
+      if (this.disposed || generation !== this.generation) return
       this.status = { kind: 'error', message: error instanceof Error ? error.message : String(error) }
       this.emit()
     }
@@ -62,6 +65,35 @@ export class TokenActivityStore {
     this.status = { kind: 'loading' }
     this.emit()
     void this.load()
+  }
+
+  /**
+   * Silently re-fetch the summary while the section is being viewed. On
+   * success the ready snapshot is replaced in place (no loading flash); a
+   * transient failure keeps the current view so an already-rendered heatmap is
+   * never blanked. Called by the section on every mount.
+   */
+  refresh(): void {
+    void this.reloadSilently()
+  }
+
+  private async reloadSilently(): Promise<void> {
+    const generation = ++this.generation
+    if (this.disposed) return
+    try {
+      const summary = await this.fetchSummary()
+      if (this.disposed || generation !== this.generation) return
+      this.status = { kind: 'ready', summary }
+      this.emit()
+      this.schedulePollIfNeeded(summary)
+    } catch (error) {
+      if (this.disposed || generation !== this.generation) return
+      // A transient failure must not blank a rendered heatmap; only surface an
+      // error when there is nothing to show yet.
+      if (this.status.kind === 'ready') return
+      this.status = { kind: 'error', message: error instanceof Error ? error.message : String(error) }
+      this.emit()
+    }
   }
 
   private schedulePollIfNeeded(summary: TokenActivitySummary): void {

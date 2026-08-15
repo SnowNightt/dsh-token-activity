@@ -30,7 +30,7 @@ export function formatCompactTokens(value: number, locale: string): string {
   if (!Number.isFinite(value) || value < 0) return formatInteger(0, locale)
   if (isZhLocale(locale)) {
     if (value >= 100_000_000) return formatScaled(value, 100_000_000, '亿')
-    if (value >= 10_000) return formatScaled(value, 10_000, '万')
+    if (value >= 10_000) return `${Math.round(value / 10_000)}万`
     return formatInteger(value, locale)
   }
   if (value >= 1_000_000_000) return formatScaled(value, 1_000_000_000, 'B')

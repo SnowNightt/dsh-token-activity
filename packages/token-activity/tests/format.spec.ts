@@ -27,7 +27,9 @@ describe('formatCompactTokens (FR-02, §7.3)', () => {
   it('uses 万/亿 for Chinese', () => {
     expect(formatCompactTokens(1_031_000_000, 'zh-CN')).toBe('10.31亿')
     expect(formatCompactTokens(2_100_000_000, 'zh-CN')).toBe('21亿')
-    expect(formatCompactTokens(1_284_000, 'zh-CN')).toBe('128.4万')
+    expect(formatCompactTokens(59_463_633, 'zh-CN')).toBe('5946万')
+    expect(formatCompactTokens(4_474_496, 'zh-CN')).toBe('447万')
+    expect(formatCompactTokens(1_284_000, 'zh-CN')).toBe('128万')
     expect(formatCompactTokens(9999, 'zh-CN')).toBe('9,999')
   })
 
