@@ -1,13 +1,14 @@
 /**
- * The two top token metric cards. Compact values on the card,
- * exact integers in the accessible name for token counts.
+ * The token metric cards: totals with compact values on the card and exact
+ * integers in the accessible name, plus the longest single-chat duration and
+ * the longest activity streak in days.
  *
  * @module @snownightt/dsh-ui-token-activity/client/MetricCards
  */
 
 import type { TokenActivityMetrics } from './contract.ts'
 import type { TokenActivityTranslate } from './locales.ts'
-import { formatCompactTokens, formatInteger } from './core/format.ts'
+import { formatDuration, formatInteger, formatStreakDays, formatWanYiTokens } from './core/format.ts'
 
 export interface MetricCardsProps {
   metrics: TokenActivityMetrics
@@ -16,9 +17,14 @@ export interface MetricCardsProps {
 }
 
 export function MetricCards({ metrics, locale, t }: MetricCardsProps) {
+  const duration = formatDuration(metrics.longestActiveChatMs, locale)
+  const streak = formatStreakDays(metrics.longestStreakDays, locale)
   const cards = [
-    { label: t('metricTotal'), value: formatCompactTokens(metrics.totalTokens, locale), full: formatInteger(metrics.totalTokens, locale) },
-    { label: t('metricPeak'), value: formatCompactTokens(metrics.peakDailyTokens, locale), full: formatInteger(metrics.peakDailyTokens, locale) },
+    // 累计/峰值指标与总计栏一致：万/亿单位、保留两位小数。
+    { label: t('metricTotal'), value: formatWanYiTokens(metrics.totalTokens, locale), full: formatInteger(metrics.totalTokens, locale) },
+    { label: t('metricPeak'), value: formatWanYiTokens(metrics.peakDailyTokens, locale), full: formatInteger(metrics.peakDailyTokens, locale) },
+    { label: t('metricLongestChat'), value: duration, full: duration },
+    { label: t('metricLongestStreak'), value: streak, full: streak },
   ]
 
   return (
