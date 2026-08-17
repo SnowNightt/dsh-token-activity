@@ -39,23 +39,20 @@ npm install --global @deepseek-ai/dsh --registry=https://registry.npmjs.org/
 
 ```sh
 # 以管理员身份运行
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
+
+# 安装完成重启
+dsh web
 ```
 
-安装完成后重启 DeepSeek Harness。
+
 
 ## 快速开始
 
-1. 安装插件后，启动或重启 DeepSeek Harness Web 服务：
+1. 安装插件后，启动 DeepSeek Harness Web 服务：
 
    ```sh
    dsh web
-   ```
-
-   如果你是在 DeepSeek Harness 源码目录中运行，请使用：
-
-   ```sh
-   pnpm dsh web
    ```
 
 2. 在浏览器中打开 DeepSeek Harness Web 界面,进入「设置」，点击一级导航中的「使用量」。
@@ -77,12 +74,6 @@ dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 dsh --profile web --dump-config
 ```
 
-如果你是在 DeepSeek Harness 源码目录中运行，请使用：
-
-```sh
-pnpm dsh --profile web --dump-config
-```
-
 输出中应同时包含：
 
 ```text
@@ -94,7 +85,7 @@ ui-token-activity
 
 ## 本地开发
 
-若是本地启动 Deepseek Harness 并且 git clone 本仓库，推荐将 Deepseek Harness 和本项目放在同一父目录。
+本地启动 Deepseek Harness 并且fock并拉取本仓库，推荐将 Deepseek Harness 和本项目放在同一父目录。
 
 先安装并构建插件：
 
