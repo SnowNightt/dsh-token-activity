@@ -41,23 +41,20 @@ Install the npm package:
 
 ```sh
 # Run as an administrator
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
+
+# Restart DeepSeek Harness after installation.
+dsh web
 ```
 
-Restart DeepSeek Harness after installation.
+
 
 ## Quick Start
 
-1. After installing the plugin, start or restart the DeepSeek Harness Web service:
+1. After installing the plugin, start the DeepSeek Harness Web service:
 
    ```sh
    dsh web
-   ```
-
-   If you are running from the DeepSeek Harness source directory, use:
-
-   ```sh
-   pnpm dsh web
    ```
 
 2. Open the DeepSeek Harness Web interface in your browser.Open **Settings**, then select the top-level **Usage** navigation item.
@@ -77,12 +74,6 @@ Run the following command to inspect the composed configuration:
 
 ```sh
 dsh --profile web --dump-config
-```
-
-If you are running from the DeepSeek Harness source directory, use:
-
-```sh
-pnpm dsh --profile web --dump-config
 ```
 
 The output should contain both of the following plugin entries:

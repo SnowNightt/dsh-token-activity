@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { TokenActivityPage } from '../src/client/TokenActivityPage.tsx'
 import { zh } from '../src/client/locales.ts'
@@ -67,5 +67,83 @@ describe('TokenActivityPage states (FR-06)', () => {
     const withUnreported = summary({ metrics: { ...summary().metrics, unreportedCalls: 2 } })
     render(<TokenActivityPage status={{ kind: 'ready', summary: withUnreported }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
     expect(screen.getByText(/部分模型调用未报告/)).toBeTruthy()
+  })
+
+  it('defaults to the daily view with Daily selected', () => {
+    render(<TokenActivityPage status={{ kind: 'ready', summary: summary() }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    expect(screen.getByRole('button', { name: '每日' }).getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getByRole('button', { name: '每周' }).getAttribute('aria-pressed')).toBe('false')
+    // The daily heatmap is shown (cell for the data day exists).
+    expect(screen.getByRole('button', { name: /2026年8月14日: 100 tokens/ })).toBeTruthy()
+  })
+
+  it('switches to the weekly view and back without reloading', () => {
+    render(<TokenActivityPage status={{ kind: 'ready', summary: summary() }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: '每周' }))
+    expect(screen.getByRole('button', { name: '每周' }).getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getByRole('button', { name: '每日' }).getAttribute('aria-pressed')).toBe('false')
+    // The week containing the data day is now a single weekly cell.
+    const weekCell = screen.getByRole('button', { name: /2026年8月10日 – 8月14日: 100 tokens/ })
+    expect(weekCell).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /2026年8月14日: 100 tokens/ })).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: '每日' }))
+    expect(screen.getByRole('button', { name: '每日' }).getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getByRole('button', { name: /2026年8月14日: 100 tokens/ })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /2026年8月10日 – 8月14日: 100 tokens/ })).toBeNull()
+  })
+
+  it('does not show the empty state while a backfill is still running', () => {
+    const running = summary({
+      days: [],
+      metrics: { ...summary().metrics, totalTokens: 0 },
+      backfill: { state: 'running', completedSessions: 0, totalSessions: 5, failedSessions: 0 },
+    })
+    render(<TokenActivityPage status={{ kind: 'ready', summary: running }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    expect(screen.queryByText('暂无 Token 使用记录')).toBeNull()
+    expect(screen.getByText('正在索引历史会话：已完成 0 / 5')).toBeTruthy()
+  })
+
+  it('shows the per-model totals bar below the heatmap with exact accessible totals', () => {
+    const withModels = summary({
+      days: [
+        { date: '2026-08-13', totalTokens: 60, models: [{ provider: 'deepseek', model: 'deepseek-chat', tokens: 60 }] },
+        {
+          date: '2026-08-14',
+          totalTokens: 100,
+          models: [
+            { provider: 'deepseek', model: 'deepseek-chat', tokens: 40 },
+            { provider: 'openai', model: 'gpt-5.6', tokens: 60 },
+          ],
+        },
+      ],
+    })
+    render(<TokenActivityPage status={{ kind: 'ready', summary: withModels }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    expect(screen.getByText('模型 Token 总计（近一年）')).toBeTruthy()
+    expect(screen.getByText('共 2 个模型')).toBeTruthy()
+    expect(screen.getByRole('status', { name: 'deepseek-chat: 100 tokens' })).toBeTruthy()
+    expect(screen.getByRole('status', { name: 'gpt-5.6: 60 tokens' })).toBeTruthy()
+    expect(screen.getByRole('status', { name: '总计: 160 tokens' })).toBeTruthy()
+  })
+
+  it('keeps the totals bar visible in the weekly view too', () => {
+    const withModels = summary()
+    render(<TokenActivityPage status={{ kind: 'ready', summary: withModels }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: '每周' }))
+    expect(screen.getByText('模型 Token 总计（近一年）')).toBeTruthy()
+    expect(screen.getByRole('status', { name: 'gpt-5.6: 100 tokens' })).toBeTruthy()
+  })
+
+  it('omits the totals bar when there are no day records', () => {
+    const empty = summary({ days: [], metrics: { ...summary().metrics, totalTokens: 0 } })
+    render(<TokenActivityPage status={{ kind: 'ready', summary: empty }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    expect(screen.queryByText('模型 Token 总计（近一年）')).toBeNull()
+  })
+
+  it('places the More/Less legend above the totals bar', () => {
+    render(<TokenActivityPage status={{ kind: 'ready', summary: summary() }} locale="zh-CN" t={makeT()} onRetry={() => {}} />)
+    const legend = screen.getByText('更少')
+    const totalsTitle = screen.getByText('模型 Token 总计（近一年）')
+    expect(legend.compareDocumentPosition(totalsTitle) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

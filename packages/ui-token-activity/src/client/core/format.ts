@@ -39,6 +39,24 @@ export function formatCompactTokens(value: number, locale: string): string {
   return formatInteger(value, locale)
 }
 
+/**
+ * Token count for the model-totals bar, always in Chinese 万/亿 units with
+ * exactly two decimals (亿 for ≥ 1e8, 万 for ≥ 1e4, raw integer below 1万).
+ * Unlike `formatCompactTokens` this scheme is unconditional: the totals bar is
+ * specified in 万/亿 regardless of the active locale.
+ */
+export function formatWanYiTokens(value: number, locale: string): string {
+  if (!Number.isFinite(value) || value <= 0) return formatInteger(0, locale)
+  if (value >= 100_000_000) return `${(value / 100_000_000).toFixed(2)}亿`
+  if (value >= 10_000) {
+    const wan = (value / 10_000).toFixed(2)
+    // A two-decimal carry (e.g. 99_999_999 → 10000.00万) escalates to 亿.
+    if (Number(wan) >= 10_000) return `${(value / 100_000_000).toFixed(2)}亿`
+    return `${wan}万`
+  }
+  return formatInteger(value, locale)
+}
+
 /** A `YYYY-MM-DD` key rendered in the current locale (Tooltip date line). */
 export function formatDayKey(dayKey: string, locale: string): string {
   const [year, month, day] = dayKey.split('-').map(Number)
@@ -57,11 +75,31 @@ export function formatMonthLabel(year: number, monthIndex: number, locale: strin
   )
 }
 
+/** Month + day only (the shortened second half of a same-year week range). */
+export function formatMonthDay(dayKey: string, locale: string): string {
+  const [year, month, day] = dayKey.split('-').map(Number)
+  return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', timeZone: 'UTC' }).format(
+    new Date(Date.UTC(year!, month! - 1, day!)),
+  )
+}
+
+/**
+ * A week range line (US-03), e.g. `2026年4月6日 – 4月12日` (zh) or
+ * `April 6, 2026 – April 12` (en). A cross-year week renders both full dates.
+ */
+export function formatWeekRange(startKey: string, endKey: string, locale: string): string {
+  const start = formatDayKey(startKey, locale)
+  const end = startKey.slice(0, 4) === endKey.slice(0, 4)
+    ? formatMonthDay(endKey, locale)
+    : formatDayKey(endKey, locale)
+  return `${start} – ${end}`
+}
+
 const MINUTE_MS = 60_000
 const HOUR_MS = 3_600_000
 const DAY_MS = 86_400_000
 
-/** Human duration for the longest-chat metric. */
+/** Human duration for the longest-chat metric, precise to the minute. */
 export function formatDuration(milliseconds: number, locale: string): string {
   const ms = Math.max(0, Math.floor(milliseconds))
   const days = Math.floor(ms / DAY_MS)
@@ -73,4 +111,9 @@ export function formatDuration(milliseconds: number, locale: string): string {
   if (hours > 0) parts.push(zh ? `${hours}小时` : `${hours}h`)
   if (minutes > 0 || parts.length === 0) parts.push(zh ? `${minutes}分钟` : `${minutes}m`)
   return parts.join(zh ? '' : ' ')
+}
+
+/** A streak length in days with its unit: `12天` / `12d`. */
+export function formatStreakDays(days: number, locale: string): string {
+  return `${formatInteger(days, locale)}${isZhLocale(locale) ? '天' : 'd'}`
 }

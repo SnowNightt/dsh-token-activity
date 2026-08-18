@@ -25,21 +25,33 @@ const metrics: TokenActivityMetrics = {
 }
 
 describe('MetricCards (FR-02)', () => {
-  it('renders compact Chinese values with exact integers in a11y names', () => {
+  it('renders 万/亿 values with two decimals and exact integers in a11y names', () => {
     const { container } = render(<MetricCards metrics={metrics} locale="zh-CN" t={makeT(zh)} />)
     expect(screen.getByText('10.31亿')).toBeTruthy()
-    expect(screen.getByText('21亿')).toBeTruthy()
-    expect(screen.queryByText('最长聊天')).toBeNull()
+    expect(screen.getByText('21.00亿')).toBeTruthy()
+    expect(screen.getByText('5分钟')).toBeTruthy()
+    expect(screen.getByText('12天')).toBeTruthy()
+    expect(screen.getByRole('status', { name: '最长聊天时长: 5分钟' })).toBeTruthy()
+    expect(screen.getByRole('status', { name: '最长连续天数: 12天' })).toBeTruthy()
     expect(screen.queryByText('当前连续')).toBeNull()
-    expect(screen.queryByText('最长连续')).toBeNull()
-    expect(screen.getAllByRole('status')).toHaveLength(2)
+    expect(screen.getAllByRole('status')).toHaveLength(4)
     const totalCard = container.querySelector('[aria-label*="1,031,000,000"]')
     expect(totalCard).toBeTruthy()
   })
 
-  it('renders English units', () => {
+  it('renders the duration and streak cards in English (totals keep 万/亿 units)', () => {
     render(<MetricCards metrics={metrics} locale="en-US" t={makeT(en)} />)
-    expect(screen.getByText('1.03B')).toBeTruthy()
-    expect(screen.getByText('2.1B')).toBeTruthy()
+    expect(screen.getByText('10.31亿')).toBeTruthy()
+    expect(screen.getByText('21.00亿')).toBeTruthy()
+    expect(screen.getByText('5m')).toBeTruthy()
+    expect(screen.getByText('12d')).toBeTruthy()
+    expect(screen.getByRole('status', { name: 'Longest chat duration: 5m' })).toBeTruthy()
+    expect(screen.getByRole('status', { name: 'Longest streak days: 12d' })).toBeTruthy()
+  })
+
+  it('renders a zero duration and zero streak for no activity', () => {
+    render(<MetricCards metrics={{ ...metrics, longestActiveChatMs: 0, longestStreakDays: 0 }} locale="zh-CN" t={makeT(zh)} />)
+    expect(screen.getByText('0分钟')).toBeTruthy()
+    expect(screen.getByRole('status', { name: '最长连续天数: 0天' })).toBeTruthy()
   })
 })
