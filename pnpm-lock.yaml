@@ -9,10 +9,10 @@ importers:
   .:
     dependencies:
       '@snownightt/dsh-token-activity':
-        specifier: ^0.1.2
+        specifier: ^0.2.0
         version: link:packages/token-activity
       '@snownightt/dsh-ui-token-activity':
-        specifier: ^0.1.2
+        specifier: ^0.2.0
         version: link:packages/ui-token-activity
     devDependencies:
       '@types/node':
@@ -68,10 +68,10 @@ importers:
   packages/token-activity-bundle:
     dependencies:
       '@snownightt/dsh-token-activity':
-        specifier: 0.1.2
+        specifier: 0.2.0
         version: link:../token-activity
       '@snownightt/dsh-ui-token-activity':
-        specifier: 0.1.2
+        specifier: 0.2.0
         version: link:../ui-token-activity
 
   packages/ui-token-activity:

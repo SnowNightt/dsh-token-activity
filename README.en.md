@@ -128,7 +128,7 @@ Restart after uninstalling.
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 
 # Install the new package. Run as Administrator
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
 ```
 
 ---
@@ -146,4 +146,3 @@ In the current version, the following situations may cause the plugin's statisti
 - Calls made with the same API key by other applications, scripts, or services are outside the plugin's visibility.
 
 For ordinary logged session model calls, the plugin counts `input + output + cache read + cache write`. Future releases will expand coverage of auxiliary calls, but provider-specific billing rules, cache behavior, and available usage APIs can still differ from the official account data.
-

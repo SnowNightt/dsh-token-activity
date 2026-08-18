@@ -132,7 +132,7 @@ dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 dsh plugin --profile web remove @snownightt/dsh-token-activity-bundle
 
 # 安装新包，以管理员身份运行
-dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
+dsh plugin --profile web add @snownightt/dsh-token-activity-bundle
 ```
 
 
@@ -151,4 +151,3 @@ dsh plugin --profile web add @snownightt/dsh-token-activity-bundle@0.1.2
 - API Key 被其他应用、脚本或服务使用的调用不在本插件的可见范围内。
 
 已写入日志的普通会话模型调用会按 `input + output + cache read + cache write` 统计。未来版本会逐步扩大辅助调用的覆盖范围，但不同提供商的账单口径、缓存规则和可用用量接口仍可能导致与官方账户数据存在差异。
-
