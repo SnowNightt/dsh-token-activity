@@ -5,7 +5,8 @@
  * normalized against the visible window's max week total, and a keyboard- and
  * pointer-accessible per-week Tooltip. Each cell is a focusable button whose
  * accessible name carries the actual covered week range and the exact token
- * count; the focused cell shows a visible ring (§7).
+ * count; the keyboard-focused cell shows a visible ring while pointer hover
+ * only darkens the cell background (§7).
  *
  * @module @snownightt/dsh-ui-token-activity/client/WeeklyHeatmap
  */
@@ -35,18 +36,27 @@ export interface WeeklyHeatmapProps {
   locale: string
 }
 
+/** How the active cell was activated: pointer hover/click or keyboard focus. */
+type ActiveSource = 'pointer' | 'keyboard'
+
 export function WeeklyHeatmap({ grid, maxWeekTokens, locale }: WeeklyHeatmapProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [activeSource, setActiveSource] = useState<ActiveSource>('pointer')
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [activeAnchor, setActiveAnchor] = useState<HTMLElement | null>(null)
+  // Focus that follows a pointer interaction must not show the keyboard ring;
+  // mouseenter fires before the resulting focus, so this ref classifies it.
+  const pointerInside = useRef(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cancelClose = useCallback(() => {
     if (closeTimer.current === null) return
     clearTimeout(closeTimer.current)
     closeTimer.current = null
   }, [])
-  const open = useCallback((index: number, anchor: HTMLElement) => {
+  const open = useCallback((index: number, anchor: HTMLElement, source: ActiveSource) => {
     cancelClose()
     setActiveIndex(index)
+    setActiveSource(source)
     setActiveAnchor(anchor)
   }, [cancelClose])
   const close = useCallback(() => {
@@ -97,6 +107,7 @@ export function WeeklyHeatmap({ grid, maxWeekTokens, locale }: WeeklyHeatmapProp
           const level = heatmapLevel(bucket.totalTokens, maxWeekTokens)
           const label = `${formatWeekRange(bucket.actualStart, bucket.actualEnd, locale)}: ${formatInteger(bucket.totalTokens, locale)} tokens`
           const active = activeIndex === index
+          const hovered = hoveredIndex === index
           return (
             <div
               key={bucket.weekStart}
@@ -104,20 +115,30 @@ export function WeeklyHeatmap({ grid, maxWeekTokens, locale }: WeeklyHeatmapProp
               tabIndex={0}
               aria-label={label}
               aria-describedby={active ? 'token-activity-tooltip' : undefined}
-              onMouseEnter={event => open(index, event.currentTarget)}
-              onMouseLeave={scheduleClose}
-              onFocus={event => open(index, event.currentTarget)}
+              onMouseEnter={event => {
+                pointerInside.current = true
+                setHoveredIndex(index)
+                open(index, event.currentTarget, 'pointer')
+              }}
+              onMouseLeave={() => {
+                pointerInside.current = false
+                setHoveredIndex(null)
+                scheduleClose()
+              }}
+              onFocus={event => open(index, event.currentTarget, pointerInside.current ? 'pointer' : 'keyboard')}
               onBlur={close}
-              onClick={event => open(index, event.currentTarget)}
+              onClick={event => open(index, event.currentTarget, 'pointer')}
               onKeyDown={(event) => { if (event.key === 'Escape') close() }}
               style={{
                 position: 'relative',
                 width: CELL,
                 height: CELL_HEIGHT,
-                // The visible focus ring below is the focus indicator; do not
-                // rely on the default outline at this tiny size (§7).
+                // The ring below is the keyboard focus indicator; pointer
+                // hover darkens the cell instead, so hover shows no ring (§7).
                 outline: 'none',
-                boxShadow: active ? '0 0 0 2px var(--dsw-focus, #2563eb)' : 'none',
+                boxShadow: active && activeSource === 'keyboard'
+                  ? '0 0 0 2px var(--dsw-focus, #2563eb)'
+                  : 'none',
                 borderRadius: 3,
               }}
             >
@@ -127,6 +148,9 @@ export function WeeklyHeatmap({ grid, maxWeekTokens, locale }: WeeklyHeatmapProp
                   height: CELL_HEIGHT,
                   borderRadius: 3,
                   background: LEVEL_COLORS[level],
+                  // brightness() darkens the theme-resolved level color on
+                  // hover without a separate darker palette per level.
+                  filter: hovered ? 'brightness(0.8)' : undefined,
                 }}
               />
             </div>

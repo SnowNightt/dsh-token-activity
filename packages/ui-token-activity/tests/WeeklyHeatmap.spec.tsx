@@ -66,14 +66,39 @@ describe('WeeklyHeatmap (US-02/US-03)', () => {
     expect(screen.queryAllByRole('listitem')).toHaveLength(0)
   })
 
-  it('renders a visible focus ring on the focused cell', () => {
+  it('renders a visible ring only for keyboard focus, never for pointer hover or click', () => {
     render(<WeeklyHeatmap grid={grid} maxWeekTokens={40000} locale="en-US" />)
     const peak = screen.getByRole('button', { name: /40,000 tokens/ })
     expect(peak.style.boxShadow).toBe('none')
+
+    fireEvent.mouseEnter(peak)
+    expect(peak.style.boxShadow).toBe('none')
+
+    // Focus that follows a pointer interaction must not show the ring either.
+    fireEvent.focus(peak)
+    expect(peak.style.boxShadow).toBe('none')
+    fireEvent.click(peak)
+    expect(peak.style.boxShadow).toBe('none')
+
+    fireEvent.mouseLeave(peak)
+    fireEvent.blur(peak)
     fireEvent.focus(peak)
     expect(peak.style.boxShadow).toContain('0 0 0 2px')
     fireEvent.blur(peak)
     expect(peak.style.boxShadow).toBe('none')
+  })
+
+  it('darkens the cell background on hover and restores it on leave', () => {
+    render(<WeeklyHeatmap grid={grid} maxWeekTokens={40000} locale="en-US" />)
+    const peak = screen.getByRole('button', { name: /40,000 tokens/ })
+    const cell = peak.firstElementChild as HTMLElement
+    expect(cell.style.filter).toBe('')
+
+    fireEvent.mouseEnter(peak)
+    expect(cell.style.filter).toBe('brightness(0.8)')
+
+    fireEvent.mouseLeave(peak)
+    expect(cell.style.filter).toBe('')
   })
 
   it('does not render the daily weekday row labels', () => {

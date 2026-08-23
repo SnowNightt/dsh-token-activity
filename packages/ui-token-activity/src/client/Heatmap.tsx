@@ -36,6 +36,7 @@ export interface HeatmapProps {
 
 export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: HeatmapProps) {
   const [activeDate, setActiveDate] = useState<string | null>(null)
+  const [hoveredDate, setHoveredDate] = useState<string | null>(null)
   const [activeAnchor, setActiveAnchor] = useState<HTMLElement | null>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cancelClose = useCallback(() => {
@@ -102,6 +103,7 @@ export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: H
           const level = heatmapLevel(tokens, maxDayTokens)
           const label = `${formatDayKey(cell.date, locale)}: ${formatInteger(tokens, locale)} tokens`
           const active = activeDate === cell.date
+          const hovered = hoveredDate === cell.date
           return (
             <div
               key={cell.date}
@@ -109,8 +111,8 @@ export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: H
               tabIndex={0}
               aria-label={label}
               aria-describedby={active ? 'token-activity-tooltip' : undefined}
-              onMouseEnter={event => open(cell.date, event.currentTarget)}
-              onMouseLeave={scheduleClose}
+              onMouseEnter={event => { setHoveredDate(cell.date); open(cell.date, event.currentTarget) }}
+              onMouseLeave={() => { setHoveredDate(null); scheduleClose() }}
               onFocus={event => open(cell.date, event.currentTarget)}
               onBlur={close}
               onClick={event => open(cell.date, event.currentTarget)}
@@ -123,6 +125,9 @@ export function Heatmap({ grid, dayTotals, maxDayTokens, locale, resolveDay }: H
                   height: CELL,
                   borderRadius: 3,
                   background: LEVEL_COLORS[level],
+                  // brightness() darkens the theme-resolved level color on
+                  // hover without a separate darker palette per level.
+                  filter: hovered ? 'brightness(0.8)' : undefined,
                 }}
               />
             </div>

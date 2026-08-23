@@ -74,6 +74,19 @@ describe('Heatmap (FR-03/FR-04/FR-05, AC-10)', () => {
     expect(cell.style.outlineOffset).toBe('')
   })
 
+  it('darkens the cell background on hover and restores it on leave', () => {
+    render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
+    const peak = screen.getByRole('button', { name: /August 14, 2026: 30,000 tokens/ })
+    const cell = peak.firstElementChild as HTMLElement
+    expect(cell.style.filter).toBe('')
+
+    fireEvent.mouseEnter(peak)
+    expect(cell.style.filter).toBe('brightness(0.8)')
+
+    fireEvent.mouseLeave(peak)
+    expect(cell.style.filter).toBe('')
+  })
+
   it('lists every model with correct sort order', () => {
     render(<Heatmap grid={grid} dayTotals={dayTotals} maxDayTokens={30000} locale="en-US" resolveDay={resolveDay} />)
     const peak = screen.getByRole('button', { name: /30,000 tokens/ })
